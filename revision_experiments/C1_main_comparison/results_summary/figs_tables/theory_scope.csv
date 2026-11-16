@@ -1,0 +1,11 @@
+method_variant,label,theory_scope
+aadmm,"AADMM (beta=1)","this paper, Theorem (AADMM-beta), fixed beta=1 in (0,2): dual gap p*-d(lam~^k) <= C/(k+1)^2, i.e. O(1/k^2); t_k-weighted ergodic primal O(1/k^2); predictor residual O(1/k)"
+aadmm__beta1.5,"AADMM (beta=1.5)","this paper, Theorem (AADMM-beta), fixed beta=1.5 in (0,2): dual gap p*-d(lam~^k) <= C/(k+1)^2, i.e. O(1/k^2); t_k-weighted ergodic primal O(1/k^2); predictor residual O(1/k)"
+admm,"ADMM / proximal ADMM (beta=1)","classical fixed-penalty (proximal) ADMM: convergence and O(1/k) ergodic rates only, no O(1/k^2) guarantee"
+admm__beta10,"ADMM / proximal ADMM (beta=10)","classical fixed-penalty (proximal) ADMM: convergence and O(1/k) ergodic rates only, no O(1/k^2) guarantee; beta chosen from the C1-1.0 penalty sweep (tuned baseline, descriptive only)"
+admm__beta100,"ADMM / proximal ADMM (beta=100)","classical fixed-penalty (proximal) ADMM: convergence and O(1/k) ergodic rates only, no O(1/k^2) guarantee; beta chosen from the C1-1.0 penalty sweep (tuned baseline, descriptive only)"
+xu_fixed,"Xu fixed (Thm 2.13)","Xu (2017) journal Thm 2.13 / (2.26): O(1/k) ergodic (uniform average)"
+xu_acc,"Xu accelerated (Thm 2.14)","Xu (2017) journal Thm 2.14, P=0: ergodic O(1/k^2) bounds (2.29)-(2.30) only; P=0 excludes the last-iterate bounds (2.32)"
+iadmm,"Tang-Toh IADMM","Tang-Toh (2024) Alg. 1, strategy (34) of arXiv:2310.00376v1: O(1/S_k) ergodic, S_k = sum of penalties; O(1/k^2) only if S_k = Omega(k^2), not implied by residual balancing (S_k reported)"
+heu_admm,"Tang-Toh Heu-ADMM","Tang-Toh (2024) Heu-ADMM, rule (39) of arXiv:2310.00376v1: heuristic, no rate theorem; beta-weighted average is a descriptive diagnostic"
+fast_admm_r,"Goldstein fast ADMM (restart)","Goldstein et al. (2014) Alg. 8 (restart), tau=1, eta=0.999: Thm 3 gives convergence of the combined residual c_k -> 0 only; no O(1/k^2) rate for these instances"

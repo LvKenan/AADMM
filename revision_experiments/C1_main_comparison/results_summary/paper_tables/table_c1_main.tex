@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering
+\caption{Iterations to reach $\max(R_p,R_d)\le10^{-6}$ (KKT) and a relative dual gap $(\widehat F^{*}-d(\lambda^{k}))/(1+|\widehat F^{*}|)\le10^{-8}$ (gap); median over $5$ random instances. Runs stop at $\max(R_p,R_d)\le10^{-8}$ or after $20000$ iterations. A superscript gives the number of instances (out of $5$) that reached the level when fewer than five did (the median is then over those); ``--'': not reached before the run stopped; n/a: not applicable (no exact $y$-subproblem). For AADMM-$\beta$ the gap is evaluated at the predictor $\tilde\lambda^{k}$, for the other methods at their multiplier iterate. Xu: \cite{Xu-2017}; IADMM, Heu-ADMM: \cite{Tang-2024}; Fast ADMM-r: restarted fast ADMM \cite{Goldstein-2014}. Configurations: P1 $(m,p)=(300,1000)$, P2 $(n,p)=(700,2000)$, P3 $p=1000$, P4 $N\times N$ image. The last column states the guarantee that applies to the configuration as run (erg.: ergodic average); see the text.}\label{tab:c1-main}
+\scriptsize\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{lrrrrrrrrl}
+\toprule
+ & \multicolumn{2}{c}{P1, $m{=}300$} & \multicolumn{2}{c}{P2, $n{=}700$} & \multicolumn{2}{c}{P3, $\mu{=}0.1$} & \multicolumn{2}{c}{P4, $N{=}128$} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Method & KKT & gap & KKT & gap & KKT & gap & KKT & gap & Guarantee \\
+\midrule
+AADMM, $\beta{=}1$ & -- & 4100 & 241 & 114 & 3491 & 1479 & 2335 & 1428 & $v_k{=}O(k^{-2})$ \\
+AADMM, $\beta{=}1.5$ & -- & 4550 & 181 & 92 & 2771 & 1300 & 2455 & 1632 & $v_k{=}O(k^{-2})$ \\
+\addlinespace[2pt]
+ADMM, $\beta{=}1$ & -- & -- & 270 & 171 & 7982 & 5650 & -- & -- & $O(k^{-1})$ erg. \\
+ADMM, $\beta{=}10$ & -- & 17575$^{4}$ & 145 & 100 & 801 & 800 & 17500$^{3}$ & -- & $O(k^{-1})$ erg. \\
+ADMM, $\beta{=}100$ & 2778 & 1530 & 1003 & 459 & 80 & 135$^{1}$ & 1764 & 3600 & $O(k^{-1})$ erg. \\
+\addlinespace[2pt]
+Xu, fixed & 7179 & 3350 & 93 & 61 & 1593 & 1377 & -- & -- & $O(k^{-1})$ erg. \\
+Xu, accel. & 3666 & 2800 & 105 & 71 & 546 & 624 & 2671 & 4050 & $O(k^{-2})$ erg. \\
+IADMM & 5281 & 3400 & 176 & 124 & 129 & -- & 967 & 1900 & $O(1/S_k)$ erg. \\
+Heu-ADMM & 2382 & 1248 & 91 & 61 & 150 & 192 & 2151 & 3300 & none \\
+Fast ADMM-r & n/a & n/a & n/a & n/a & 820 & 689 & -- & -- & $c_k\to0$ \\
+\bottomrule
+\end{tabular}
+\end{table}

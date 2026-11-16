@@ -1,0 +1,12 @@
+P1_m100_p500_s0          beta=1.0: max rel. deviation over 50 its = 0.0e+00
+P1_m100_p500_s0          beta=1.5: max rel. deviation over 50 its = 0.0e+00
+P1_m100_p500_s0          beta=1.9: max rel. deviation over 50 its = 9.3e-17
+P2_n350_p1000_s0         beta=1.0: max rel. deviation over 50 its = 2.9e-16
+P2_n350_p1000_s0         beta=1.5: max rel. deviation over 50 its = 3.2e-16
+P2_n350_p1000_s0         beta=1.9: max rel. deviation over 50 its = 3.4e-16
+P3_p500_mu1_s0           beta=1.0: max rel. deviation over 50 its = 4.5e-16
+P3_p500_mu1_s0           beta=1.5: max rel. deviation over 50 its = 4.2e-16
+P3_p500_mu1_s0           beta=1.9: max rel. deviation over 50 its = 3.8e-16
+P4_N64_s0                beta=1.0: max rel. deviation over 50 its = 1.8e-16
+P4_N64_s0                beta=1.5: max rel. deviation over 50 its = 2.3e-16
+P4_N64_s0                beta=1.9: max rel. deviation over 50 its = 2.6e-16

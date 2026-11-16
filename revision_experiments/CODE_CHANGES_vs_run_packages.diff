@@ -1,0 +1,370 @@
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C1_v12/README.md revision_experiments/C1_main_comparison/README.md
+--- run_package:C1_v12/README.md	2026-11-15 11:30:00.491617620 +0900
++++ revision_experiments/C1_main_comparison/README.md	2026-11-16 16:29:54.043816271 +0900
+@@ -1,8 +1,8 @@
+ # C1: AADMM vs. representative (accelerated / adaptive) ADMMs, same settings
+ 
+ Package for the JSC major revision of *Fixed-Penalty Accelerated ADMM with an O(1/k^2) Dual Gap for
+-Semi-Strongly Convex Separable Optimization* (reply to R1-2 / R1-3; design from the revision memo
+-`Revision_Suggestions_CN.md`, Sec. 4.3). Python 3 with **numpy and scipy only** (matplotlib only for `plot_c1.py`),
++Semi-Strongly Convex Separable Optimization* (Section 4.5 of the revised paper).
++ Python 3 with **numpy and scipy only** (matplotlib only for `plot_c1.py`),
+ float64, fixed seeds, **single-threaded BLAS** (set in `run_c1.py` before numpy is imported).
+ 
+ ## C1-1.2 at a glance (see CHANGELOG.md)
+@@ -14,7 +14,7 @@
+ ## How to run (Colab CPU runtime or any Linux machine)
+ 
+ ```bash
+-cd C1_v12
++cd revision_experiments/C1_main_comparison
+ python run_c1.py env                       # environment record
+ python run_c1.py smoke                     # < 1 min; must end with "SMOKE PASS"
+ python run_c1.py run --group ref    --out OUT > ref.log 2>&1 &   # references (second process)
+@@ -47,15 +47,15 @@
+ | `tests/sanity.py` | implementation checks (run inside `smoke`) |
+ | `plot_c1.py` | figures and tables from results |
+ 
+-## Test problems (memo Sec. 4.3.1; all non-degenerate, all subproblems closed form or one factorization)
++## Test problems (Section 4.5; all non-degenerate, all subproblems closed form or one factorization)
+ 
+ Paper form: `min f(x)+g(y)  s.t.  Ax+By=b`, `g` μ-strongly convex, `A = a·I`.
+ 
+ | id | problem | f, A | g (strongly convex), B | data / sizes (5 seeds each) |
+ |---|---|---|---|---|
+-| P1 | elastic-net SVM (Xu (2017) §3.3, Tang–Toh (2024) Ex. 6.2) | (1/m)eᵀ[x]₊, A=I | μ₁‖y‖₁+μ₂/2‖y‖², B=Diag(labels)·samples | generator of Xu (2017) §3.3, μ₁=μ₂=0.01, ρ=0.5; (m,p) ∈ {(100,500),(300,1000),(1000,3000)} |
+-| P2 | square-root-loss elastic net (Tran-Dinh (2019) §5.2, Tang–Toh (2024) Ex. 6.3) | ‖x‖₂, A=−I | elastic net, μ₁=0.01, μ₂=0.1, B Gaussian/√n | generator of Tran-Dinh (2019) §5.2 (σ=1e-3); (n,p,s) ∈ {(350,1000,100),(700,2000,200),(1750,5000,500)} |
+-| P3 | dense box QP (Tran-Dinh (2019) §5.1, Tang–Toh (2024) Ex. 6.4) | δ_[lo,hi], A=−I | ½yᵀHy+hᵀy, λ_min(H)=μ_g exactly, B Gaussian/√n | generator of Tran-Dinh (2019) §5.1; p=n ∈ {500,1000,2000}, μ_g ∈ {1, 0.1} (2000: μ_g=1 only) |
++| P1 | elastic-net SVM (Xu (2017) §3.3, Tang–Toh (2024) Example 2) | (1/m)eᵀ[x]₊, A=I | μ₁‖y‖₁+μ₂/2‖y‖², B=Diag(labels)·samples | generator of Xu (2017) §3.3, μ₁=μ₂=0.01, ρ=0.5; (m,p) ∈ {(100,500),(300,1000),(1000,3000)} |
++| P2 | square-root-loss elastic net (Tran-Dinh (2019) §5.2, Tang–Toh (2024) Example 3) | ‖x‖₂, A=−I | elastic net, μ₁=0.01, μ₂=0.1, B Gaussian/√n | generator of Tran-Dinh (2019) §5.2 (σ=1e-3); (n,p,s) ∈ {(350,1000,100),(700,2000,200),(1750,5000,500)} |
++| P3 | dense box QP (Tran-Dinh (2019) §5.1, Tang–Toh (2024) Example 4) | δ_[lo,hi], A=−I | ½yᵀHy+hᵀy, λ_min(H)=μ_g exactly, B Gaussian/√n | generator of Tran-Dinh (2019) §5.1; p=n ∈ {500,1000,2000}, μ_g ∈ {1, 0.1} (2000: μ_g=1 only) |
+ | P4 | isotropic TV denoising, primal splitting | α‖·‖₂,₁, A=I | ½‖y−f₀‖², B=−∇ (Neumann) | synthetic piecewise-constant image + N(0,0.1²) noise, α=0.1; N ∈ {64,128,192} |
+ 
+ All methods run on the same normalized problem, A,B,b ← s·(A,B,b).
+@@ -77,20 +77,20 @@
+ | `admm` | classical ADMM, eq. (4) | β = 1 (scaled problem); main also β = 10 and β = 100 (separate variants); sweep β ∈ {0.01, 0.1, 10, 100}. y-step exact for P3 (Cholesky of H+βBᵀB, one factorization) and P4 (DCT); **linearized** for P1, P2 (proximal ADMM, Q=β(μI−BᵀB)), because the exact y-step is a LASSO with no closed form |
+ | `xu_fixed` | Xu (2017) Alg. 2, journal Theorem 2.13 / (2.26), as "Nonaccelerated Linearized ADMM" in Xu (2017) §3.3 | β=γ=1/(2μ), P=0, Q=I/2−BᵀB/(2μ) |
+ | `xu_acc` | Xu (2017) Alg. 2, journal Theorem 2.14 / (2.27), as "Accelerated Linearized ADMM" in Xu (2017) §3.3 | β_k=γ_k=(k+1)γ, Q^k=(k+1)(q₀I−γBᵀB), q₀=μ/20, γ=q₀/μ, P=0 |
+-| `iadmm` | Tang–Toh (2024) Alg. 1 (IADMM) + strategy (34), arXiv:2310.00376v1 | γ=1.618, ε=1e-4, requested β₁=1/(2μ); sweep × {1e-3, 1e-1, 1e1, 1e3}; IADMM clamps to its floor |
+-| `heu_admm` | Tang–Toh (2024) Heu-ADMM, rule (39), arXiv:2310.00376v1 | same as `iadmm` |
++| `iadmm` | Tang–Toh (2024, MPC) Alg. 1 (IADMM) + strategy (35) | γ=1.618, ε=1e-4, requested β₁=1/(2μ); sweep × {1e-3, 1e-1, 1e1, 1e3}; IADMM clamps to its floor |
++| `heu_admm` | Tang–Toh (2024, MPC) Heu-ADMM, rule (40) | same as `iadmm` |
+ | `fast_admm_r` | Goldstein et al. (SIIMS 2014) fast ADMM with restart (Alg. 8), η=0.999 | τ=1 (scaled problem); only P3, P4 (needs exact y-step) |
+ 
+-Ergodic (averaged) iterates: AADMM t_k-weighted (memo Theorem D), `xu_acc` weights (k+k₀+1), k₀=1 (Xu journal Thm 2.14),
+-`iadmm` β_k-weighted (Tang–Toh Thm 3.3 in arXiv v1); the same weights for
+-`heu_admm` are only descriptive, since rule (39), arXiv:2310.00376v1 need not satisfy Algorithm 1's interval.
++Ergodic (averaged) iterates: AADMM t_k-weighted (Corollary 8 of the revised paper), `xu_acc` weights (k+k₀+1), k₀=1 (Xu journal Thm 2.14),
++`iadmm` β_k-weighted (Tang–Toh, journal Theorem 1); the same weights for
++`heu_admm` are only descriptive, since rule (40) need not satisfy Algorithm 1's interval.
+ The residual-balanced `iadmm` has an O(1/S_k) ergodic guarantee, not an automatic O(1/k²) guarantee.
+ `weight_sum` records S_k for these two methods; examine β_k/k and S_k/k² rather than inferring
+ quadratic cumulative growth from the method name. Taking the admissible upper endpoint at every
+ step defines a separate theoretical schedule; this patch does not silently replace the balancing rule.
+ Other averages are descriptive unless supported by the corresponding theorem.
+ 
+-### Guarantee scope of each method as run here (D4; state this in the paper's experiment section)
++### Guarantee scope of each method as run here (as stated in Section 4.5)
+ 
+ No "theory-version" variants are added (no Xu run with P≻0, η>1; no Tang–Toh run that always takes the
+ upper endpoint). Each curve may be described only with the guarantee listed below; anything else observed
+@@ -101,12 +101,12 @@
+ | `aadmm` (β=1, and main variant β=1.5) | fixed β∈(0,2) on the normalized problem: dual gap v_k=O(1/k²) at the predictor (Theorem 3), O(1/k²) objective error/feasibility of the t_k-weighted average (Corollary 8), O(1/k) last-predictor bounds (Proposition 9) | oracle-complexity optimality; scale invariance of the trajectory |
+ | `admm` (β=1, and main variants β=10, β=100) | fixed-penalty (proximal/linearized on P1, P2; exact on P3, P4) ADMM: standard non-accelerated O(1/k) ergodic theory only; β=10/100 are tuned baselines | any accelerated rate; no O(1/k²) guarantee |
+ | `xu_fixed` | Xu (2017) Theorem 2.13: O(1/k) for the uniform average | accelerated rate |
+-| `xu_acc` | Xu (2017) Theorem 2.14, (2.29)–(2.30): O(1/k²) objective error and feasibility of the (k+k₀+1)-weighted average | boundedness or last-iterate bounds (2.32a)–(2.32b): these need P≻0 and η>1, but P=0 here |
+-| `iadmm` | Tang–Toh arXiv v1 Theorem 3.3 / Corollary 3.4: O(1/S_k) for the β_k-weighted average (hence ≥ O(1/k)); whole-sequence convergence (Theorem 3.5) since β_k ≥ floor > 0 and A=aI | O(1/k²): residual balancing does not guarantee S_k=Ω(k²); report the measured S_k/k² only as a diagnostic |
+-| `heu_admm` | none from Tang–Toh: rule (39) can leave Algorithm 1's interval and has no floor | any theorem of Tang–Toh; its β_k-weighted average is descriptive |
++| `xu_acc` | Xu (2017) Theorem 2.14, (2.30a)–(2.30b): O(1/k²) objective error and feasibility of the (k+k₀+1)-weighted average | boundedness or last-iterate bounds (2.32a)–(2.32b): these need P≻0 and η>1, but P=0 here |
++| `iadmm` | Tang–Toh journal Theorem 1 / Corollary 1: O(1/S_k) for the β_k-weighted average (hence ≥ O(1/k)); whole-sequence convergence (journal Theorem 2) since β_k ≥ floor > 0 and A=aI | O(1/k²): residual balancing does not guarantee S_k=Ω(k²); report the measured S_k/k² only as a diagnostic |
++| `heu_admm` | none from Tang–Toh: rule (40) can leave Algorithm 1's interval and has no floor | any theorem of Tang–Toh; its β_k-weighted average is descriptive |
+ | `fast_admm_r` | Goldstein et al. (2014) Theorem 3: combined residual c_k → 0 | the O(1/k²) of their Theorem 2 (needs no restart, both blocks strongly convex, G quadratic, small τ) |
+ 
+-### Reporting the penalty actually used (D2)
++### Reporting the penalty actually used
+ 
+ IADMM starts from beta1_used = max(beta1_requested, floor), floor = 1e-6/s² (Algorithm 1 requires β₁ ≥ floor).
+ Each result file stores `method_settings` = {beta1_requested, beta1_used, beta_floor, penalty_policy}
+@@ -121,7 +121,7 @@
+ R_p and R_d as in Tang–Toh (2024) §5.2 (sign of λ flipped to the paper's convention), KKT = max(R_p, R_d);
+ F = f(x)+g(y); F_feas = F(x_feas(y), y) for P1, P2, P4 (x_feas solves Ax+By=b); Lagrange dual value d(Π(λ))
+ (a lower bound on F\*); `rp_abs` = ‖A₀x+B₀y−b₀‖; the same for the ergodic iterate; for AADMM also
+-L(x̃,ỹ,λ̃) (equals d(λ̃), memo Prop. A) and the memo Prop. E post-processed point (‖Ĝ‖ and its KKT);
++L(x̃,ỹ,λ̃) (equals d(λ̃), Proposition 4 of the revised paper) and a post-processed point used only as a diagnostic (‖Ĝ‖ and its KKT);
+ the penalty in use; the counts of products with B or Bᵀ and of matrix factorizations; algorithm time `t_alg`.
+ `t_alg` excludes monitoring. The 120 s cap is wall time including monitoring, so it can leave
+ different amounts of algorithm time for different methods; report both times and do not interpret
+@@ -136,7 +136,7 @@
+ 
+ ## Implementation uncertainties (please check before using numbers in the paper)
+ 
+-1. **Tang–Toh Q matrix.** Alg. 1 leaves Q ⪰ 0 free, and the paper does not say which Q was used in Ex. 6.2–6.4. We use
++1. **Tang–Toh Q matrix.** Alg. 1 leaves Q ⪰ 0 free, and the paper does not say which Q was used in Examples 2–4. We use
+    Q=0 (exact y-step) for P3/P4 and Q=μI−CᵀC (linearized, as suggested in Tang–Toh (2024) §5.1) for P1/P2. For P3 with Q=0,
+    every change of β_k triggers a new Cholesky factorization (counted). The sweep group also runs P3 with the
+    linearized variant (`tt_q=lin`).
+@@ -147,7 +147,7 @@
+    Algorithm 1's floor < 1 convention applies in original coordinates: beta_0=s² beta_s,
+    lambda_0=s lambda_s, Q_0=Q_s/s². The original floor remains 1e-6 even if the scaled floor exceeds 1.
+ 4. **Tang–Toh (2024) R_p, R_d** have denominators that can vanish; we guard them with 1e-300 (never active in tests).
+-5. **Tang–Toh (2024) β₁** in Ex. 6.1–6.3 is swept over 1e-5…1e5; we use 1/(2μ) as a common normalized baseline plus a sweep. Their Ex. 6.4 uses
++5. **Tang–Toh (2024) β₁** in Examples 1–3 is swept over 1e-5…1e5; we use 1/(2μ) as a common normalized baseline plus a sweep. Their Example 4 uses
+    β₁=floor=1/(2‖B‖²); combining our baseline with the general floor 1e-6/s² is a C1 choice.
+ 6. **Xu source**: checked against the SIOPT journal version: Algorithm 2 (1.15), Theorems 2.13–2.14,
+    (2.26)–(2.32), and §3.3 p.1479. The old references to (78)/(79) did not identify equations in the
+@@ -163,14 +163,15 @@
+    family as `xu_fixed` (same update, different β).
+ 10. **Data generators**: P1 uses Σ = blockdiag(ρE+(1−ρ)I, I); Xu (2017) prints "ρE+ρI", which is the same matrix for ρ=0.5.
+    P2 follows Tran-Dinh arXiv v3 §5.2; P3 follows §5.1 (with μ_g=0.1 also tested). P4 uses a synthetic image (no image file needed).
+-11. Tang–Toh formulas are checked against arXiv:2310.00376v1, Algorithm 1 and rules (34)/(39).
+-    The published Algorithm 1 image agrees; the MPC theorem/rule numbering remains unverified.
+-    The former (36)/(41) labels do not identify these rules in v1.
++11. Tang–Toh formulas are checked against the journal version (Math. Program. Comput. 16, 113–150, 2024):
++    Algorithm 1, rule (35) (IADMM residual balancing, p. 128) and rule (40) (Heu-ADMM, p. 131), Theorem 1,
++    Corollary 1 and Theorem 2. These rules are word-for-word identical to rules (34)/(39) of arXiv:2310.00376v1,
++    which the code was originally checked against; only the numbering differs.
+ 
+ ## Notes on Algorithm 2 found while implementing (also reported in tests/sanity.py)
+ 
+ * Alg. 1 (eqs. (13)–(15)) and Alg. 2 with β=1 give identical iterates (S4; max difference 5e-13).
+-* The memo's degeneracy (Sec. 4.1) is reproduced (S3): with g=½‖y‖², B=I, β=1 and no rescaling,
++* The structural degeneracy of the LASSO/TV splittings of Secs. 4.2–4.4 (Remark 11(i) of the revised paper) is reproduced (S3): with g=½‖y‖², B=I, β=1 and no rescaling,
+   λᵏ−zᵏ=0 and Ax̃ᵏ+Bỹᵏ−b=0 to machine precision. With β=0.5 or BᵀB≠μI this does not happen.
+ * For B=0, S5 now asserts agreement with the revised manuscript's formal limit in s=λ−z
+   (main source lines 553–572), and disagreement with He–Yuan (2010), (3.4b). The latter was
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C1_v12/c1/methods.py revision_experiments/C1_main_comparison/c1/methods.py
+--- run_package:C1_v12/c1/methods.py	2026-11-15 00:38:27.000000000 +0900
++++ revision_experiments/C1_main_comparison/c1/methods.py	2026-11-16 16:29:54.039816323 +0900
+@@ -11,8 +11,8 @@
+                beta=gamma=1/(2||B||^2), P=0, Q = I/2 - B^T B/(2||B||^2) (linearized y-step).
+   xu_acc       Xu (2017) Alg. 2 with adaptive parameters (2.27): beta_k=gamma_k=(k+1)gamma, P^k=0,
+                Q^k=(k+1)(q0 I - gamma B^T B), q0 = mu/20, gamma = q0/||B||^2 (as in Xu (2017) Sec. 3.3).
+-  iadmm        Tang-Toh Algorithm 1 (IADMM) with adaptive strategy (34), arXiv:2310.00376v1.
+-  heu_admm     Tang-Toh (2024) Heu-ADMM: same iteration with the heuristic rule (39), arXiv:2310.00376v1.
++  iadmm        Tang-Toh Algorithm 1 (IADMM) with adaptive strategy (35) of the journal version (MPC 16, 2024).
++  heu_admm     Tang-Toh (2024) Heu-ADMM: same iteration with the heuristic rule (40) of the journal version.
+   fast_admm_r  Goldstein-O'Donoghue-Setzer-Baraniuk (SIIMS 2014) fast ADMM with restart
+                (their Alg. 8), only where the exact y-step is available (P3, P4).
+ Every UNCERTAIN implementation choice is marked 'UNCERTAIN' and listed in README.md.
+@@ -177,7 +177,7 @@
+     the strongly convex block explicit.  We use Q = 0 (exact y-step) where an exact one-factorization
+     y-step exists (P3: Cholesky of H + beta_k B^T B, refactorized whenever beta_k changes; P4: DCT) and
+     Q = mu I - C^T C (linearized) for P1, P2.  lambda_max(C^T C + Q) is then ||B||^2 resp. mu.
+-    UNCERTAIN: beta_1.  Tang-Toh (2024) Sec. 6.2 uses beta_1 = beta = 1/(2||B||^2) (Ex. 6.4); Sec. 6.1 sweeps beta_1 in
++    UNCERTAIN: beta_1.  Tang-Toh (2024) Sec. 6.2 uses beta_1 = beta = 1/(2||B||^2) (Example 4); Sec. 6.1 sweeps beta_1 in
+     [1e-5, 1e5].  Default here: beta_1 = 1/(2 mu) (= 1/(2||B||^2) up to the 1.001 safety factor), times
+     beta1_mult in the robustness sweep.
+     UNCERTAIN: lower bound beta.  Tang-Toh (2024) states beta = 1e-6 (absolute, unscaled problem); since we run on the
+@@ -191,9 +191,9 @@
+ 
+ 
+ def run_iadmm(prob, mon, beta1_mult=1.0, gamma=1.618, eps=1e-4, tt_q="exact"):
+-    """Tang-Toh (2024) Algorithm 1 (IADMM) + strategy (34), arXiv:2310.00376v1.  Tang-Toh (2024) Sec. 5.2: gamma = 1.618, eps = 1e-4, beta = 1e-6.
++    """Tang-Toh (2024) Algorithm 1 (IADMM) + strategy (35) (journal version, MPC 16, 2024).  Tang-Toh (2024) Sec. 5.2: gamma = 1.618, eps = 1e-4, beta = 1e-6.
+     Paper sign: lam_TT = -lam_ours, so step 3 'lam + gamma beta_k r' becomes lam - gamma beta_k r here.
+-    Ergodic weights beta_k (Thm 3.3 / Cor. 3.4: v^k = sum beta_i x^{i+1} / sum beta_i)."""
++    Ergodic weights beta_k (journal Theorem 1 / Corollary 1: v^k = sum beta_i x^{i+1} / sum beta_i)."""
+     exact, lam_max, beta1, floor = _tt_setup(prob, beta1_mult, tt_q)
+     requested_beta1 = beta1
+     beta1 = max(beta1, floor)  # Algorithm 1 requires the initial penalty to satisfy its floor.
+@@ -202,7 +202,7 @@
+     sig = prob.mu
+     mu = prob.mu
+     mon.tic()
+-    pg1 = prob.make_prox_g_fixed(1.0)     # needed for R_d in rule (34), arXiv v1; timed as part of the method
++    pg1 = prob.make_prox_g_fixed(1.0)     # needed for R_d in rule (35) (journal version); timed as part of the method
+     mon.toc()
+ 
+     def adapt(bk, Rp, Rd):
+@@ -217,10 +217,10 @@
+ 
+ 
+ def run_heu_admm(prob, mon, beta1_mult=1.0, gamma=1.618, tt_q="exact"):
+-    """Tang-Toh (2024) Heu-ADMM, rule (39), arXiv:2310.00376v1.  UNCERTAIN: Tang-Toh (2024) does not state gamma or Q for Heu-ADMM separately;
++    """Tang-Toh (2024) Heu-ADMM, rule (40) (journal version).  UNCERTAIN: Tang-Toh (2024) does not state gamma or Q for Heu-ADMM separately;
+     we use the IADMM ones (gamma = 1.618, same Q)."""
+     exact, lam_max, beta1, floor = _tt_setup(prob, beta1_mult, tt_q)
+-    # rule (39) has no interval floor; beta_1 is NOT clamped (recorded for the sweep tables).
++    # rule (40) has no interval floor; beta_1 is NOT clamped (recorded for the sweep tables).
+     mon.method_meta = dict(beta1_requested=beta1, beta1_used=beta1, beta_floor=None,
+                            penalty_policy="heuristic_rule39_no_floor")
+     mu = prob.mu
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C1_v12/c1/problems.py revision_experiments/C1_main_comparison/c1/problems.py
+--- run_package:C1_v12/c1/problems.py	2026-11-15 00:38:27.000000000 +0900
++++ revision_experiments/C1_main_comparison/c1/problems.py	2026-11-16 16:29:54.035816375 +0900
+@@ -186,7 +186,7 @@
+ 
+ 
+ class P1_SVM(ElasticNetG, Problem):
+-    """P1: elastic-net SVM  (Xu (2017) Sec. 3.3 eq. (116); Tang-Toh (2024) Ex. 6.2)
++    """P1: elastic-net SVM  (Xu (2017) Sec. 3.3 eq. (3.7); Tang-Toh (2024) Example 2)
+         min (1/m) e^T [x]_+ + mu1 ||y||_1 + mu2/2 ||y||^2   s.t.  x + Bdata y = e
+     (paper variables: x = hinge slack in R^m with A = I; y = weight vector in R^p with
+     B = Diag(labels) * samples, strongly convex g = elastic net)."""
+@@ -235,7 +235,7 @@
+ 
+ 
+ class P2_SqrtEN(ElasticNetG, Problem):
+-    """P2: elastic net with square-root loss (Tran-Dinh (2019) Sec. 5.2; Tang-Toh (2024) Ex. 6.3)
++    """P2: elastic net with square-root loss (Tran-Dinh (2019) Sec. 5.2; Tang-Toh (2024) Example 3)
+         min ||x||_2 + mu1 ||y||_1 + mu2/2 ||y||^2   s.t.  -x + Bdata y = c."""
+     name = "P2"
+     has_exact_y = False
+@@ -280,7 +280,7 @@
+ 
+ 
+ class P3_QP(Problem):
+-    """P3: dense box-constrained QP (Tran-Dinh (2019) Sec. 5.1; Tang-Toh (2024) Ex. 6.4)
++    """P3: dense box-constrained QP (Tran-Dinh (2019) Sec. 5.1; Tang-Toh (2024) Example 4)
+         min 1/2 y^T H y + h^T y + delta_[lo,hi](x)   s.t.  -x + Bdata y = 0.
+     H = R R^T/... + mu_g I with R in R^{p x (p//2+1)}, so lambda_min(H) = mu_g exactly."""
+     name = "P3"
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C1_v12/c1/tasks.py revision_experiments/C1_main_comparison/c1/tasks.py
+--- run_package:C1_v12/c1/tasks.py	2026-11-15 11:02:01.750549589 +0900
++++ revision_experiments/C1_main_comparison/c1/tasks.py	2026-11-16 13:02:35.192718139 +0900
+@@ -71,10 +71,10 @@
+         return ("Xu (2017) journal Thm 2.14, P=0: ergodic O(1/k^2) bounds (2.29)-(2.30) only; P=0 excludes the "
+                 "last-iterate bounds (2.32)")
+     if method == "iadmm":
+-        return ("Tang-Toh (2024) Alg. 1, strategy (34) of arXiv:2310.00376v1: O(1/S_k) ergodic, S_k = sum of penalties; "
++        return ("Tang-Toh (2024, MPC) Alg. 1, strategy (35): O(1/S_k) ergodic, S_k = sum of penalties; "
+                 "O(1/k^2) only if S_k = Omega(k^2), not implied by residual balancing (S_k reported)")
+     if method == "heu_admm":
+-        return ("Tang-Toh (2024) Heu-ADMM, rule (39) of arXiv:2310.00376v1: heuristic, no rate theorem; "
++        return ("Tang-Toh (2024, MPC) Heu-ADMM, rule (40): heuristic, no rate theorem; "
+                 "beta-weighted average is a descriptive diagnostic")
+     if method == "fast_admm_r":
+         return ("Goldstein et al. (2014) Alg. 8 (restart), tau=1, eta=0.999: Thm 3 gives convergence of the combined "
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C2_supp/README.md revision_experiments/C2_supplementary/README.md
+--- run_package:C2_supp/README.md	2026-11-15 21:52:14.931661165 +0900
++++ revision_experiments/C2_supplementary/README.md	2026-11-16 16:29:54.043816271 +0900
+@@ -16,7 +16,7 @@
+ - **(c)** L2: regenerate the toy Figure F_E1 of Section 4.1 with the corrected updates, plus a
+   non-degenerate variant *f(x)=x²/2* (same solution, β need not be 1). Deterministic; no data.
+ 
+-`c1/` is an **unchanged** copy of the C1-1.2 generators, operators, Monitor and AADMM. New code is
++`c1/` is a copy of the C1-1.2 generators (identical code; in this public release only comments and descriptive strings were updated to the journal numbering of Tang–Toh, see `../CODE_CHANGES_vs_run_packages.diff`), operators, Monitor and AADMM. New code is
+ in `c2/`, `run_c2.py`, `plot_c2.py`, `toy_fig.py` and `tests/sanity_c2.py`. Do not edit code or
+ `c1/config.json` / `c2/config.json`. Do not mix results with a different package hash: `run` refuses
+ result files from another version or code hash.
+@@ -37,7 +37,7 @@
+ ## How to run (Colab CPU runtime or any Linux machine)
+ 
+ ```bash
+-cd C2_supp
++cd revision_experiments/C2_supplementary
+ python run_c2.py env                       # environment record
+ python run_c2.py smoke                     # < 3 min; must end with "SMOKE PASS"
+ python run_c2.py run --group all --out OUT # all 846 tasks, sequential (timing); refs first
+@@ -67,7 +67,7 @@
+ - `a_range` (504): typically 20–45 minutes (5000-iteration cap; P4 N=128 and the P1 class, which often run to the iteration cap, dominate). Dual FISTA with β>1 may run all 5000 iterations without hitting the divergence guard (AADMM with β=4 did diverge in the smoke test).
+ - `b` (299): this is the long group. Fixed inner-iteration counts, and AADMM with β=1 on the B=I LASSO splitting (the exact inner solve is optimal after one outer step), are short. The expensive tasks are AADMM with β=1.5 and the tight inner-tolerance schedules (`c=1e-11` and, on the larger instances, `c=1e-7`), especially LASSO 500×5000 / 1000×10000 and TV denoising with N=128. A few of the largest tight-tolerance tasks may run to the 3600 s cap.
+ 
+-**Total wall-clock time, one sequential process: typically about 6–10 hours; worst case about 12–16 hours** if several large tight-tolerance tasks reach the 3600 s cap. The run is resumable after a disconnect. If a single task produces no log line for more than 70 minutes, report it (the cap is 3600 s plus a modest margin for monitoring).
++**Measured in the official run: about 80 min on a Colab CPU runtime.** Planning estimate before the run: **typically about 6–10 hours; worst case about 12–16 hours** if several large tight-tolerance tasks reach the 3600 s cap. The run is resumable after a disconnect. If a single task produces no log line for more than 70 minutes, report it (the cap is 3600 s plus a modest margin for monitoring).
+ 
+ ## Contents
+ 
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C2_supp/c1/methods.py revision_experiments/C2_supplementary/c1/methods.py
+--- run_package:C2_supp/c1/methods.py	2026-11-15 00:38:27.000000000 +0900
++++ revision_experiments/C2_supplementary/c1/methods.py	2026-11-16 16:29:54.039816323 +0900
+@@ -11,8 +11,8 @@
+                beta=gamma=1/(2||B||^2), P=0, Q = I/2 - B^T B/(2||B||^2) (linearized y-step).
+   xu_acc       Xu (2017) Alg. 2 with adaptive parameters (2.27): beta_k=gamma_k=(k+1)gamma, P^k=0,
+                Q^k=(k+1)(q0 I - gamma B^T B), q0 = mu/20, gamma = q0/||B||^2 (as in Xu (2017) Sec. 3.3).
+-  iadmm        Tang-Toh Algorithm 1 (IADMM) with adaptive strategy (34), arXiv:2310.00376v1.
+-  heu_admm     Tang-Toh (2024) Heu-ADMM: same iteration with the heuristic rule (39), arXiv:2310.00376v1.
++  iadmm        Tang-Toh Algorithm 1 (IADMM) with adaptive strategy (35) of the journal version (MPC 16, 2024).
++  heu_admm     Tang-Toh (2024) Heu-ADMM: same iteration with the heuristic rule (40) of the journal version.
+   fast_admm_r  Goldstein-O'Donoghue-Setzer-Baraniuk (SIIMS 2014) fast ADMM with restart
+                (their Alg. 8), only where the exact y-step is available (P3, P4).
+ Every UNCERTAIN implementation choice is marked 'UNCERTAIN' and listed in README.md.
+@@ -177,7 +177,7 @@
+     the strongly convex block explicit.  We use Q = 0 (exact y-step) where an exact one-factorization
+     y-step exists (P3: Cholesky of H + beta_k B^T B, refactorized whenever beta_k changes; P4: DCT) and
+     Q = mu I - C^T C (linearized) for P1, P2.  lambda_max(C^T C + Q) is then ||B||^2 resp. mu.
+-    UNCERTAIN: beta_1.  Tang-Toh (2024) Sec. 6.2 uses beta_1 = beta = 1/(2||B||^2) (Ex. 6.4); Sec. 6.1 sweeps beta_1 in
++    UNCERTAIN: beta_1.  Tang-Toh (2024) Sec. 6.2 uses beta_1 = beta = 1/(2||B||^2) (Example 4); Sec. 6.1 sweeps beta_1 in
+     [1e-5, 1e5].  Default here: beta_1 = 1/(2 mu) (= 1/(2||B||^2) up to the 1.001 safety factor), times
+     beta1_mult in the robustness sweep.
+     UNCERTAIN: lower bound beta.  Tang-Toh (2024) states beta = 1e-6 (absolute, unscaled problem); since we run on the
+@@ -191,9 +191,9 @@
+ 
+ 
+ def run_iadmm(prob, mon, beta1_mult=1.0, gamma=1.618, eps=1e-4, tt_q="exact"):
+-    """Tang-Toh (2024) Algorithm 1 (IADMM) + strategy (34), arXiv:2310.00376v1.  Tang-Toh (2024) Sec. 5.2: gamma = 1.618, eps = 1e-4, beta = 1e-6.
++    """Tang-Toh (2024) Algorithm 1 (IADMM) + strategy (35) (journal version, MPC 16, 2024).  Tang-Toh (2024) Sec. 5.2: gamma = 1.618, eps = 1e-4, beta = 1e-6.
+     Paper sign: lam_TT = -lam_ours, so step 3 'lam + gamma beta_k r' becomes lam - gamma beta_k r here.
+-    Ergodic weights beta_k (Thm 3.3 / Cor. 3.4: v^k = sum beta_i x^{i+1} / sum beta_i)."""
++    Ergodic weights beta_k (journal Theorem 1 / Corollary 1: v^k = sum beta_i x^{i+1} / sum beta_i)."""
+     exact, lam_max, beta1, floor = _tt_setup(prob, beta1_mult, tt_q)
+     requested_beta1 = beta1
+     beta1 = max(beta1, floor)  # Algorithm 1 requires the initial penalty to satisfy its floor.
+@@ -202,7 +202,7 @@
+     sig = prob.mu
+     mu = prob.mu
+     mon.tic()
+-    pg1 = prob.make_prox_g_fixed(1.0)     # needed for R_d in rule (34), arXiv v1; timed as part of the method
++    pg1 = prob.make_prox_g_fixed(1.0)     # needed for R_d in rule (35) (journal version); timed as part of the method
+     mon.toc()
+ 
+     def adapt(bk, Rp, Rd):
+@@ -217,10 +217,10 @@
+ 
+ 
+ def run_heu_admm(prob, mon, beta1_mult=1.0, gamma=1.618, tt_q="exact"):
+-    """Tang-Toh (2024) Heu-ADMM, rule (39), arXiv:2310.00376v1.  UNCERTAIN: Tang-Toh (2024) does not state gamma or Q for Heu-ADMM separately;
++    """Tang-Toh (2024) Heu-ADMM, rule (40) (journal version).  UNCERTAIN: Tang-Toh (2024) does not state gamma or Q for Heu-ADMM separately;
+     we use the IADMM ones (gamma = 1.618, same Q)."""
+     exact, lam_max, beta1, floor = _tt_setup(prob, beta1_mult, tt_q)
+-    # rule (39) has no interval floor; beta_1 is NOT clamped (recorded for the sweep tables).
++    # rule (40) has no interval floor; beta_1 is NOT clamped (recorded for the sweep tables).
+     mon.method_meta = dict(beta1_requested=beta1, beta1_used=beta1, beta_floor=None,
+                            penalty_policy="heuristic_rule39_no_floor")
+     mu = prob.mu
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C2_supp/c1/problems.py revision_experiments/C2_supplementary/c1/problems.py
+--- run_package:C2_supp/c1/problems.py	2026-11-15 00:38:27.000000000 +0900
++++ revision_experiments/C2_supplementary/c1/problems.py	2026-11-16 16:29:54.039816323 +0900
+@@ -186,7 +186,7 @@
+ 
+ 
+ class P1_SVM(ElasticNetG, Problem):
+-    """P1: elastic-net SVM  (Xu (2017) Sec. 3.3 eq. (116); Tang-Toh (2024) Ex. 6.2)
++    """P1: elastic-net SVM  (Xu (2017) Sec. 3.3 eq. (3.7); Tang-Toh (2024) Example 2)
+         min (1/m) e^T [x]_+ + mu1 ||y||_1 + mu2/2 ||y||^2   s.t.  x + Bdata y = e
+     (paper variables: x = hinge slack in R^m with A = I; y = weight vector in R^p with
+     B = Diag(labels) * samples, strongly convex g = elastic net)."""
+@@ -235,7 +235,7 @@
+ 
+ 
+ class P2_SqrtEN(ElasticNetG, Problem):
+-    """P2: elastic net with square-root loss (Tran-Dinh (2019) Sec. 5.2; Tang-Toh (2024) Ex. 6.3)
++    """P2: elastic net with square-root loss (Tran-Dinh (2019) Sec. 5.2; Tang-Toh (2024) Example 3)
+         min ||x||_2 + mu1 ||y||_1 + mu2/2 ||y||^2   s.t.  -x + Bdata y = c."""
+     name = "P2"
+     has_exact_y = False
+@@ -280,7 +280,7 @@
+ 
+ 
+ class P3_QP(Problem):
+-    """P3: dense box-constrained QP (Tran-Dinh (2019) Sec. 5.1; Tang-Toh (2024) Ex. 6.4)
++    """P3: dense box-constrained QP (Tran-Dinh (2019) Sec. 5.1; Tang-Toh (2024) Example 4)
+         min 1/2 y^T H y + h^T y + delta_[lo,hi](x)   s.t.  -x + Bdata y = 0.
+     H = R R^T/... + mu_g I with R in R^{p x (p//2+1)}, so lambda_min(H) = mu_g exactly."""
+     name = "P3"
+diff -ru '--exclude=__pycache__' '--exclude=C2_out_smoke' '--exclude=C2_smoke_*' '--exclude=results_summary' '--exclude=paper_analysis' '--exclude=RUN_LIST.json' '--exclude=check_dualpg_equiv*' run_package:C2_supp/c1/tasks.py revision_experiments/C2_supplementary/c1/tasks.py
+--- run_package:C2_supp/c1/tasks.py	2026-11-15 11:02:01.750549589 +0900
++++ revision_experiments/C2_supplementary/c1/tasks.py	2026-11-16 13:02:35.192718139 +0900
+@@ -71,10 +71,10 @@
+         return ("Xu (2017) journal Thm 2.14, P=0: ergodic O(1/k^2) bounds (2.29)-(2.30) only; P=0 excludes the "
+                 "last-iterate bounds (2.32)")
+     if method == "iadmm":
+-        return ("Tang-Toh (2024) Alg. 1, strategy (34) of arXiv:2310.00376v1: O(1/S_k) ergodic, S_k = sum of penalties; "
++        return ("Tang-Toh (2024, MPC) Alg. 1, strategy (35): O(1/S_k) ergodic, S_k = sum of penalties; "
+                 "O(1/k^2) only if S_k = Omega(k^2), not implied by residual balancing (S_k reported)")
+     if method == "heu_admm":
+-        return ("Tang-Toh (2024) Heu-ADMM, rule (39) of arXiv:2310.00376v1: heuristic, no rate theorem; "
++        return ("Tang-Toh (2024, MPC) Heu-ADMM, rule (40): heuristic, no rate theorem; "
+                 "beta-weighted average is a descriptive diagnostic")
+     if method == "fast_admm_r":
+         return ("Goldstein et al. (2014) Alg. 8 (restart), tau=1, eta=0.999: Thm 3 gives convergence of the combined "

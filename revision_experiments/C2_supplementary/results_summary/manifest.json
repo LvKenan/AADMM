@@ -1,0 +1,10 @@
+{
+ "created": "2026-11-15T23:49:59+09:00",
+ "version": "C2-supp-1.0",
+ "package_sha256": "7a89b90e8927d81de434703e96a6eb60684e1b16c9eaad1b91b385d568a57260",
+ "n_tasks": 846,
+ "n_done": 846,
+ "missing": [],
+ "failed_logged": [],
+ "strict_plot_ok": true
+}

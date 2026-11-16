@@ -1,0 +1,566 @@
+{
+ "version": "C2-supp-1.0",
+ "created": "2026-11-15T23:49:59+09:00",
+ "n_tasks": 846,
+ "n_done": 846,
+ "ref_status": {
+  "tol": 7
+ },
+ "refs_not_tol": [],
+ "stop_reasons": [
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta0.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta0.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.25",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.25",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.75",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.75",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.9",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta1.9",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta2.5",
+   "stop": "diverged",
+   "n": 21
+  },
+  {
+   "group": "a_range",
+   "method": "aadmm",
+   "variant": "beta4",
+   "stop": "diverged",
+   "n": 21
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta0.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta0.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.25",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.25",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.75",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.75",
+   "stop": "tol",
+   "n": 6
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.9",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta1.9",
+   "stop": "tol",
+   "n": 6
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta2.5",
+   "stop": "diverged",
+   "n": 6
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta2.5",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta4",
+   "stop": "diverged",
+   "n": 6
+  },
+  {
+   "group": "a_range",
+   "method": "dual_fista",
+   "variant": "beta4",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta0.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta0.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.25",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.25",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.5",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.75",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.75",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.9",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta1.9",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta2.5",
+   "stop": "maxit",
+   "n": 17
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta2.5",
+   "stop": "tol",
+   "n": 4
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta4",
+   "stop": "diverged",
+   "n": 6
+  },
+  {
+   "group": "a_range",
+   "method": "dual_pg",
+   "variant": "beta4",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "a_struct",
+   "method": "aadmm+fista",
+   "variant": "beta0.5",
+   "stop": "maxit/maxit",
+   "n": 12
+  },
+  {
+   "group": "a_struct",
+   "method": "aadmm+fista",
+   "variant": "beta1",
+   "stop": "maxit/maxit",
+   "n": 12
+  },
+  {
+   "group": "a_struct",
+   "method": "aadmm+fista",
+   "variant": "beta1.5",
+   "stop": "maxit/maxit",
+   "n": 12
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 1}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 2}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 3}",
+   "stop": "tol",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 1e-07, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"c\": 1e-11, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "tol",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 100}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 10}",
+   "stop": "maxit",
+   "n": 7
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 1}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 20}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 50}",
+   "stop": "maxit",
+   "n": 1
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1.5_{\"mode\": \"count\", \"n\": 50}",
+   "stop": "tol",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 1}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 2}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 3}",
+   "stop": "tol",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 1e-07, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"c\": 1e-11, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "tol",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 100}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 10}",
+   "stop": "maxit",
+   "n": 7
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 1}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 20}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "aadmm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 50}",
+   "stop": "tol",
+   "n": 7
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"c\": 0.0001, \"mode\": \"tol\", \"p\": 2}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"c\": 1e-11, \"mode\": \"tol\", \"p\": 0}",
+   "stop": "tol",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 100}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 10}",
+   "stop": "maxit",
+   "n": 7
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 1}",
+   "stop": "maxit",
+   "n": 13
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 20}",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "b",
+   "method": "admm",
+   "variant": "beta1_{\"mode\": \"count\", \"n\": 50}",
+   "stop": "tol",
+   "n": 7
+  }
+ ],
+ "method_wall_minutes": 78.14604453618318
+}

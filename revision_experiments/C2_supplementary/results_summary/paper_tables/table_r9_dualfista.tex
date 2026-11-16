@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+\centering
+\caption{AADMM-$\beta$ versus FISTA and the proximal-gradient method with constant step $\beta$ applied to the dual problem $\min(\Phi+\Psi)$, on the normalized problems of Sec.~\ref{sec:c1} ($L_\Psi\le1/1.001$, so the standard step-size ranges are $\beta\le1/L_\Psi$ for FISTA and $\beta<2/L_\Psi$ for the proximal-gradient method). Three random instances per configuration; runs stop at $\max(R_p,R_d)\le10^{-8}$ or after $5000$ iterations. Upright numbers: median iterations to $10^{-8}$ (superscript: number of instances that reached it, if fewer than three). Italic numbers: median KKT residual after $5000$ iterations. ``div.'': divergence guard $\|\lambda^k\|>10^{8}(1+\|\lambda^{*}\|)$ triggered or a non-finite value (median iteration in parentheses). Theorem~\ref{Theor-AADMM} covers AADMM-$\beta$ for $\beta<2$ only.}\label{tab:dualfista}
+\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llrrrrrrr}
+\toprule
+Problem & Method & $\beta{=}0.5$ & $1$ & $1.5$ & $1.75$ & $1.9$ & $2.5$ & $4$ \\
+\midrule
+P1, $m{=}100$ & AADMM-$\beta$ & \textit{4e-5} & \textit{2e-5} & \textit{2e-5} & \textit{2e-5} & \textit{6e-5} & div.\ (163) & div.\ (60) \\
+ & dual FISTA & \textit{8e-5} & \textit{2e-5} & \textit{9e-6} & \textit{9e-6} & \textit{7e-6} & \textit{4e-6} & \textit{2e-6} \\
+ & dual PG & \textit{3e-2} & \textit{1e-2} & \textit{5e-3} & \textit{4e-3} & \textit{3e-3} & \textit{2e-3} & \textit{1e-3} \\
+\addlinespace[2pt]
+P2, $n{=}700$ & AADMM-$\beta$ & 784 & 431 & 318 & 290 & 295 & div.\ (153) & div.\ (54) \\
+ & dual FISTA & 813 & 431 & 296 & \textit{1e-1} & \textit{2} & \textit{2} & \textit{1} \\
+ & dual PG & 803 & 398 & 263 & 225 & 206 & \textit{2e-1} & \textit{1} \\
+\addlinespace[2pt]
+P3, $\mu{=}0.1$ & AADMM-$\beta$ & \textit{1e-6} & \textit{2e-7} & \textit{5e-8} & \textit{4e-8} & \textit{5e-8} & div.\ (53) & div.\ (15) \\
+ & dual FISTA & \textit{2e-6} & \textit{2e-7} & \textit{3e-8} & 4716 & 4453 & div.\ (38) & div.\ (18) \\
+ & dual PG & \textit{6e-4} & \textit{3e-5} & \textit{2e-6} & \textit{7e-7} & \textit{3e-7} & 4302$^{1}$ & div.\ (34) \\
+\addlinespace[2pt]
+P3, $\mu{=}1$ & AADMM-$\beta$ & 1840 & 1025 & 750 & 666 & 712 & div.\ (52) & div.\ (14) \\
+ & dual FISTA & 1837 & 1024 & 662 & 591 & 548 & div.\ (37) & div.\ (17) \\
+ & dual PG & 2228 & 1111 & 738 & 632 & 581 & 440 & div.\ (30) \\
+\addlinespace[2pt]
+P4, $N{=}128$ & AADMM-$\beta$ & \textit{5e-7} & \textit{2e-7} & \textit{3e-7} & \textit{4e-7} & \textit{8e-7} & div.\ (148) & div.\ (54) \\
+ & dual FISTA & \textit{7e-7} & \textit{2e-7} & \textit{1} & \textit{2} & \textit{2} & \textit{2} & \textit{2} \\
+ & dual PG & \textit{2e-4} & \textit{9e-5} & \textit{5e-5} & \textit{4e-5} & \textit{4e-5} & \textit{1} & \textit{1} \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering
+\caption{Algorithm time in seconds (monitoring excluded) to reach $\max(R_p,R_d)\le10^{-6}$ (KKT) and a relative dual gap $\le10^{-8}$ (gap), for the configurations of Table~\ref{tab:c1-main}; median over $5$ instances, superscripts and ``--'' as there. The last column is the median time per iteration in milliseconds, for P1/P2/P3/P4. Single-threaded BLAS on an Intel Xeon (2.20\,GHz) cloud machine. AADMM dual-gap times use the exact per-iteration predictor dual value; other methods use the first logged iterate below the level.}\label{tab:c1-time}
+\scriptsize\setlength{\tabcolsep}{2.4pt}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{P1, $m{=}300$} & \multicolumn{2}{c}{P2, $n{=}700$} & \multicolumn{2}{c}{P3, $\mu{=}0.1$} & \multicolumn{2}{c}{P4, $N{=}128$} & ms/it \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Method & KKT & gap & KKT & gap & KKT & gap & KKT & gap & P1/P2/P3/P4 \\
+\midrule
+AADMM, $\beta{=}1$ & -- & 1.17 & 0.27 & 0.13 & 10.4 & 4.02 & 3.44 & 2.09 & 0.26/1.1/2.9/1.5 \\
+AADMM, $\beta{=}1.5$ & -- & 1.29 & 0.20 & 0.10 & 8.41 & 3.93 & 3.67 & 2.40 & 0.28/1.1/3/1.5 \\
+\addlinespace[2pt]
+ADMM, $\beta{=}1$ & -- & -- & 0.42 & 0.26 & 22.3 & 15.9 & -- & -- & 0.33/1.5/2.7/1.4 \\
+ADMM, $\beta{=}10$ & -- & 5.89$^{4}$ & 0.22 & 0.16 & 2.41 & 2.40 & 23.1$^{3}$ & -- & 0.35/1.5/2.9/1.3 \\
+ADMM, $\beta{=}100$ & 0.95 & 0.54 & 1.35 & 0.70 & 0.32 & 0.49$^{1}$ & 2.46 & 4.77 & 0.35/1.3/3.8/1.3 \\
+\addlinespace[2pt]
+Xu, fixed & 2.48 & 1.16 & 0.15 & 0.10 & 4.47 & 3.93 & -- & -- & 0.35/1.6/2.6/1 \\
+Xu, accel. & 1.22 & 0.97 & 0.17 & 0.11 & 1.75 & 1.97 & 2.65 & 4.03 & 0.35/1.5/3.1/0.99 \\
+IADMM & 2.76 & 1.78 & 0.37 & 0.27 & 8.99 & -- & 2.06 & 4.10 & 0.53/2/66/2.1 \\
+Heu-ADMM & 1.20 & 0.65 & 0.19 & 0.13 & 1.26 & 1.49 & 4.54 & 6.73 & 0.52/2.1/7.3/2.1 \\
+Fast ADMM-r & n/a & n/a & n/a & n/a & 2.54 & 2.17 & -- & -- & n/a/n/a/3.1/1.7 \\
+\bottomrule
+\end{tabular}
+\end{table}

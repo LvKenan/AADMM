@@ -1,0 +1,391 @@
+{
+ "version": "C1-1.2",
+ "created": "2026-11-15T16:58:26+09:00",
+ "n_tasks": 938,
+ "n_done": 938,
+ "ref_status": {
+  "tol": 70
+ },
+ "refs_not_tol": [],
+ "stop_reasons": [
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "maxit",
+   "n": 18
+  },
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "tol",
+   "n": 47
+  },
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 19
+  },
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "aadmm",
+   "variant": "default",
+   "stop": "tol",
+   "n": 46
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta10",
+   "stop": "maxit",
+   "n": 20
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta10",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta10",
+   "stop": "tol",
+   "n": 45
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta100",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta100",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "beta100",
+   "stop": "tol",
+   "n": 50
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 25
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "admm",
+   "variant": "default",
+   "stop": "tol",
+   "n": 40
+  },
+  {
+   "group": "main",
+   "method": "fast_admm_r",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 10
+  },
+  {
+   "group": "main",
+   "method": "fast_admm_r",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "fast_admm_r",
+   "variant": "default",
+   "stop": "tol",
+   "n": 25
+  },
+  {
+   "group": "main",
+   "method": "heu_admm",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 4
+  },
+  {
+   "group": "main",
+   "method": "heu_admm",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "heu_admm",
+   "variant": "default",
+   "stop": "tol",
+   "n": 61
+  },
+  {
+   "group": "main",
+   "method": "iadmm",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 4
+  },
+  {
+   "group": "main",
+   "method": "iadmm",
+   "variant": "default",
+   "stop": "tol",
+   "n": 66
+  },
+  {
+   "group": "main",
+   "method": "xu_acc",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 4
+  },
+  {
+   "group": "main",
+   "method": "xu_acc",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 1
+  },
+  {
+   "group": "main",
+   "method": "xu_acc",
+   "variant": "default",
+   "stop": "tol",
+   "n": 65
+  },
+  {
+   "group": "main",
+   "method": "xu_fixed",
+   "variant": "default",
+   "stop": "maxit",
+   "n": 15
+  },
+  {
+   "group": "main",
+   "method": "xu_fixed",
+   "variant": "default",
+   "stop": "time_budget",
+   "n": 5
+  },
+  {
+   "group": "main",
+   "method": "xu_fixed",
+   "variant": "default",
+   "stop": "tol",
+   "n": 50
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta0.25",
+   "stop": "maxit",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta0.25",
+   "stop": "tol",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta0.5",
+   "stop": "maxit",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta0.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "maxit",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta1.5",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta1.9",
+   "stop": "maxit",
+   "n": 6
+  },
+  {
+   "group": "sweep",
+   "method": "aadmm",
+   "variant": "beta1.9",
+   "stop": "tol",
+   "n": 6
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta0.01",
+   "stop": "maxit",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta0.1",
+   "stop": "maxit",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta0.1",
+   "stop": "tol",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta10",
+   "stop": "maxit",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta10",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta100",
+   "stop": "maxit",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "admm",
+   "variant": "beta100",
+   "stop": "tol",
+   "n": 9
+  },
+  {
+   "group": "sweep",
+   "method": "heu_admm",
+   "variant": "beta1_mult0.001",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "heu_admm",
+   "variant": "beta1_mult0.1",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "heu_admm",
+   "variant": "beta1_mult10",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "heu_admm",
+   "variant": "beta1_mult1000",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "heu_admm",
+   "variant": "tt_qlin",
+   "stop": "tol",
+   "n": 3
+  },
+  {
+   "group": "sweep",
+   "method": "iadmm",
+   "variant": "beta1_mult0.001",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "iadmm",
+   "variant": "beta1_mult0.1",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "iadmm",
+   "variant": "beta1_mult10",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "iadmm",
+   "variant": "beta1_mult1000",
+   "stop": "tol",
+   "n": 12
+  },
+  {
+   "group": "sweep",
+   "method": "iadmm",
+   "variant": "tt_qlin",
+   "stop": "tol",
+   "n": 3
+  }
+ ],
+ "method_wall_minutes": 293.78535972116714
+}

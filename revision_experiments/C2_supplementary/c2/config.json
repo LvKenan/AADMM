@@ -1,0 +1,228 @@
+{
+ "_comment": "C2_supp run configuration. DO NOT EDIT (the runner must not change this file).",
+ "version": "C2-supp-1.0",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "a_run": {
+  "tol": 1e-08,
+  "maxit": 5000,
+  "time_budget": 3600.0,
+  "log_all_until": 100,
+  "log_density": 50,
+  "div_factor": 100000000.0
+ },
+ "a_struct": {
+  "K": 300,
+  "betas": [
+   0.5,
+   1.0,
+   1.5
+  ],
+  "instances": [
+   {
+    "P": "P1",
+    "m": 100,
+    "p": 500
+   },
+   {
+    "P": "P3",
+    "p": 500,
+    "mu": 1.0
+   },
+   {
+    "P": "P3",
+    "p": 500,
+    "mu": 0.1
+   },
+   {
+    "P": "P4",
+    "N": 64
+   }
+  ]
+ },
+ "a_range": {
+  "betas": [
+   0.5,
+   1.0,
+   1.25,
+   1.5,
+   1.75,
+   1.9,
+   2.5,
+   4.0
+  ],
+  "methods": [
+   "aadmm",
+   "dual_fista",
+   "dual_pg"
+  ],
+  "instances": [
+   {
+    "P": "P1",
+    "m": 100,
+    "p": 500
+   },
+   {
+    "P": "P2",
+    "n": 350,
+    "p": 1000,
+    "s": 100
+   },
+   {
+    "P": "P2",
+    "n": 700,
+    "p": 2000,
+    "s": 200
+   },
+   {
+    "P": "P3",
+    "p": 500,
+    "mu": 0.1
+   },
+   {
+    "P": "P3",
+    "p": 500,
+    "mu": 1.0
+   },
+   {
+    "P": "P4",
+    "N": 64
+   },
+   {
+    "P": "P4",
+    "N": 128
+   }
+  ]
+ },
+ "b_run": {
+  "tol_dgap": 1e-10,
+  "maxit": 500,
+  "time_budget": 3600.0,
+  "log_all_until": 100,
+  "log_density": 50,
+  "eps_floor_rel": 1e-12,
+  "maxinner": {
+   "LASSO": 20000,
+   "TVD": 5000
+  },
+  "check_every": 1
+ },
+ "b_instances": [
+  {
+   "kind": "LASSO",
+   "m": 200,
+   "n": 2000,
+   "n_paper": 10
+  },
+  {
+   "kind": "LASSO",
+   "m": 500,
+   "n": 5000,
+   "n_paper": 10
+  },
+  {
+   "kind": "LASSO",
+   "m": 1000,
+   "n": 10000,
+   "n_paper": 10,
+   "seeds": [
+    0
+   ],
+   "_comment": "largest size of the paper (sn-article Sec. 4.2), one seed (runtime)"
+  },
+  {
+   "kind": "TVD",
+   "N": 64,
+   "n_paper": 20
+  },
+  {
+   "kind": "TVD",
+   "N": 128,
+   "n_paper": 20
+  }
+ ],
+ "b_aadmm_betas": [
+  1.0,
+  1.5
+ ],
+ "b_aadmm_schedules": [
+  {
+   "mode": "tol",
+   "c": 1e-11,
+   "p": 0
+  },
+  {
+   "mode": "tol",
+   "c": 0.0001,
+   "p": 0
+  },
+  {
+   "mode": "tol",
+   "c": 1e-07,
+   "p": 0
+  },
+  {
+   "mode": "tol",
+   "c": 0.0001,
+   "p": 1
+  },
+  {
+   "mode": "tol",
+   "c": 0.0001,
+   "p": 2
+  },
+  {
+   "mode": "tol",
+   "c": 0.0001,
+   "p": 3
+  },
+  {
+   "mode": "count",
+   "n": 1
+  },
+  {
+   "mode": "count",
+   "n": "paper"
+  },
+  {
+   "mode": "count",
+   "n": "5paper"
+  }
+ ],
+ "b_admm_schedules": [
+  {
+   "mode": "tol",
+   "c": 1e-11,
+   "p": 0
+  },
+  {
+   "mode": "tol",
+   "c": 0.0001,
+   "p": 2
+  },
+  {
+   "mode": "count",
+   "n": 1
+  },
+  {
+   "mode": "count",
+   "n": "paper"
+  },
+  {
+   "mode": "count",
+   "n": "5paper"
+  }
+ ],
+ "lasso_reference": {
+  "tol": 1e-13,
+  "maxit": 400000,
+  "time_budget": 1800.0
+ },
+ "checkpoint": {
+  "every_tasks": 25,
+  "every_minutes": 15.0
+ }
+}

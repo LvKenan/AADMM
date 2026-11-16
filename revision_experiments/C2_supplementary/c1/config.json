@@ -1,0 +1,30 @@
+{
+  "_comment": "C1 run configuration. DO NOT EDIT (the runner must not change this file).",
+  "version": "C1-1.2",
+  "seeds": [0, 1, 2, 3, 4],
+  "sweep_seeds": [0, 1, 2],
+  "run": {"tol": 1e-8, "maxit": 20000, "time_budget": 120.0, "log_all_until": 100, "log_density": 50},
+  "reference": {"tol": 1e-12, "maxit": 2000000, "time_budget": 300.0, "time_budget_by_problem": {"P4": 2400.0}},
+  "checkpoint": {"every_tasks": 25, "every_minutes": 15.0},
+  "instances": {
+    "P1": [{"m": 100, "p": 500}, {"m": 300, "p": 1000}, {"m": 1000, "p": 3000}],
+    "P2": [{"n": 350, "p": 1000, "s": 100}, {"n": 700, "p": 2000, "s": 200}, {"n": 1750, "p": 5000, "s": 500}],
+    "P3": [{"p": 500, "mu": 1.0}, {"p": 500, "mu": 0.1}, {"p": 1000, "mu": 1.0}, {"p": 1000, "mu": 0.1}, {"p": 2000, "mu": 1.0}],
+    "P4": [{"N": 64}, {"N": 128}, {"N": 192}]
+  },
+  "main_methods": ["aadmm", "admm", "xu_fixed", "xu_acc", "iadmm", "heu_admm", "fast_admm_r"],
+  "main_variants": [["admm", {"beta": 10.0}], ["admm", {"beta": 100.0}], ["aadmm", {"beta": 1.5}]],
+  "sweep_instances": {
+    "P1": {"m": 100, "p": 500},
+    "P2": {"n": 350, "p": 1000, "s": 100},
+    "P3": {"p": 500, "mu": 0.1},
+    "P4": {"N": 64}
+  },
+  "sweep_variants": [
+    ["aadmm", {"beta": 0.25}], ["aadmm", {"beta": 0.5}], ["aadmm", {"beta": 1.5}], ["aadmm", {"beta": 1.9}],
+    ["admm", {"beta": 0.01}], ["admm", {"beta": 0.1}], ["admm", {"beta": 10.0}], ["admm", {"beta": 100.0}],
+    ["iadmm", {"beta1_mult": 0.001}], ["iadmm", {"beta1_mult": 0.1}], ["iadmm", {"beta1_mult": 10.0}], ["iadmm", {"beta1_mult": 1000.0}],
+    ["heu_admm", {"beta1_mult": 0.001}], ["heu_admm", {"beta1_mult": 0.1}], ["heu_admm", {"beta1_mult": 10.0}], ["heu_admm", {"beta1_mult": 1000.0}],
+    ["iadmm", {"tt_q": "lin"}], ["heu_admm", {"tt_q": "lin"}]
+  ]
+}

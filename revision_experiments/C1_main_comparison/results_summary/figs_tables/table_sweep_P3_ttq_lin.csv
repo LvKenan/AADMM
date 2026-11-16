@@ -1,0 +1,7 @@
+task,iters_to_1e-5,time_to_1e-5,stop,iters
+sweep__P3_p500_mu0.1_s1__iadmm__tt_qlin,144,0.19654716601144173,tol,267
+sweep__P3_p500_mu0.1_s0__iadmm__tt_qlin,157,0.20543104300668347,tol,282
+sweep__P3_p500_mu0.1_s1__heu_admm__tt_qlin,305,0.3674237160339544,tol,543
+sweep__P3_p500_mu0.1_s0__heu_admm__tt_qlin,307,0.3622461489867419,tol,530
+sweep__P3_p500_mu0.1_s2__iadmm__tt_qlin,148,0.20952096900873585,tol,269
+sweep__P3_p500_mu0.1_s2__heu_admm__tt_qlin,268,0.3176990900064993,tol,455

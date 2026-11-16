@@ -1,0 +1,34 @@
+\begin{table}[htbp]
+\centering
+\caption{Inexact $x$-subproblems on the LASSO and TV splittings of Secs.~\ref{section_LR}--\ref{section_ID} ($B=I$, $g=\frac12\|\cdot\|^2$, closed-form $y$-subproblem). Inner solver: warm-started ISTA (LASSO) or Chambolle's method (TV) for a fixed number of steps ($n_{\rm paper}=10$ and $20$, the values of the original experiments), or warm-started FISTA with restart until the inner certificate is at most $\varepsilon_k(1+|p^{*}|)$. Runs stop at a relative dual gap $\le10^{-10}$ or after $500$ outer iterations. Columns: final relative dual gap $(p^{*}-d(\Pi\tilde\lambda^{k}))/(1+|p^{*}|)$ with $\Pi$ a feasibility projection of the multiplier, total inner iterations, algorithm time in seconds; medians over instances. AADMM-1 and ADMM-1 solve the same $x$-subproblems in these splittings (Sec.~\ref{sec:largescale}), and no convergence guarantee is claimed for any inexact run (Remark~\ref{rem:inexact}). Blank: not run. With $\varepsilon_k=10^{-11}$ on TV the inner solver did not always meet the tolerance within $5000$ inner steps.}\label{tab:inexact}
+\scriptsize\setlength{\tabcolsep}{2.4pt}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{AADMM, $\beta{=}1$} & \multicolumn{3}{c}{AADMM, $\beta{=}1.5$} & \multicolumn{3}{c}{ADMM, $\beta{=}1$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Inner rule & gap & inner & s & gap & inner & s & gap & inner & s \\
+\midrule
+\multicolumn{10}{l}{LASSO, $1000\times10000$ (1 instance)}\\
+\quad $\varepsilon_k=10^{-11}$ & 9.8e-12 & 780 & 12.9 & 6.4e-11 & 11226 & 162.5 & 9.5e-11 & 780 & 12.2 \\
+\quad $\varepsilon_k=10^{-4}$ & 9.9e-5 & 272 & 10.5 & 9.9e-5 & 1115 & 22.2 &  &  &  \\
+\quad $\varepsilon_k=10^{-7}$ & 9.9e-8 & 495 & 13.4 & 9.8e-8 & 4474 & 77.5 &  &  &  \\
+\quad $10^{-4}/k$ & 2.0e-7 & 1784 & 34.6 & 2.0e-7 & 3646 & 62.2 &  &  &  \\
+\quad $10^{-4}/k^{2}$ & 4.0e-10 & 3167 & 54.9 & 4.0e-10 & 5720 & 92.8 & 4.0e-10 & 3167 & 53.0 \\
+\quad $10^{-4}/k^{3}$ & 9.9e-11 & 2054 & 32.9 & 1.0e-10 & 5129 & 76.7 &  &  &  \\
+\quad 1 inner step & 1.1e-2 & 500 & 9.8 & 2.4e-2 & 500 & 9.9 & 1.1e-2 & 500 & 9.6 \\
+\quad $n_{\rm paper}$ steps & 1.7e-6 & 5000 & 44.3 & 2.5e-5 & 5000 & 44.0 & 1.7e-6 & 5000 & 43.0 \\
+\quad $5n_{\rm paper}$ steps & 9.4e-11 & 11150 & 83.1 & 1.0e-10 & 16450 & 122.8 & 9.4e-11 & 11200 & 84.6 \\
+\addlinespace[2pt]
+\multicolumn{10}{l}{TV, $128\times128$ (3 instances)}\\
+\quad $\varepsilon_k=10^{-11}$ & 7.0e-11 & 30000 & 18.9 & 7.5e-11 & 136362 & 85.4 & 7.3e-11 & 85000 & 54.3 \\
+\quad $\varepsilon_k=10^{-4}$ & 9.2e-5 & 80 & 0.3 & 6.2e-5 & 97 & 0.4 &  &  &  \\
+\quad $\varepsilon_k=10^{-7}$ & 9.7e-8 & 1022 & 0.9 & 6.4e-8 & 1071 & 1.0 &  &  &  \\
+\quad $10^{-4}/k$ & 1.8e-7 & 9170 & 6.2 & 1.8e-7 & 11368 & 7.4 &  &  &  \\
+\quad $10^{-4}/k^{2}$ & 3.6e-10 & 86164 & 54.6 & 3.6e-10 & 105736 & 67.5 & 3.6e-10 & 86160 & 55.2 \\
+\quad $10^{-4}/k^{3}$ & 9.8e-11 & 55372 & 35.3 & 9.8e-11 & 71653 & 44.8 &  &  &  \\
+\quad 1 inner step & 7.9e-5 & 500 & 0.4 & 1.3e-4 & 500 & 0.5 & 7.9e-5 & 500 & 0.4 \\
+\quad $n_{\rm paper}$ steps & 1.2e-6 & 10000 & 3.0 & 2.2e-6 & 10000 & 3.0 & 1.2e-6 & 10000 & 2.9 \\
+\quad $5n_{\rm paper}$ steps & 1.2e-7 & 50000 & 13.6 & 2.1e-7 & 50000 & 13.7 & 1.2e-7 & 50000 & 13.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
